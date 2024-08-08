@@ -1,12 +1,13 @@
-# Proyecto de Autenticación con zk-SNARKs, Node.js y MongoDB
+# Proyecto de Autenticación con zk-SNARKs, Node.js y Noir/Nargo
 
-Este proyecto demuestra cómo implementar un esquema de autenticación utilizando zk-SNARKs, Node.js, MongoDB y Passport.js para autenticación privada.
+Este proyecto demuestra cómo implementar un esquema de autenticación utilizando zk-SNARKs, Node.js, Noir/Nargo y Passport.js para autenticación privada.
 
 ## Requisitos
 
 - Node.js
 - Noir/Nargo
 - npm (Node Package Manager)
+- Passport.js
 
 ## Instalación
 
