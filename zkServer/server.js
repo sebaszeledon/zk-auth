@@ -66,15 +66,18 @@ function readData() {
     fs.writeFileSync('input.json', JSON.stringify(witnessInput));
   
     // Generar la prueba
-    execSync('nargo execute witness -- --input input.json --output witness.json');
-    execSync('nargo prove witness.json --compiled compiled_program.json --output proof.json');
+    //execSync('nargo execute witness --input input.json --output witness.json');
+    //execSync('nargo prove witness.json --compiled compiled_program.json --output proof.json');
+    execSync('nargo execute -- --input input.json --output witness.json');
+    execSync('nargo prove --input witness.json --compiled compiled_program.json --output proof.json');
   
     // Leer el resultado de la prueba
     const result = fs.readFileSync('proof.json');
     const proof = JSON.parse(result);
   
     // Verificar la prueba
-    const verifyCommand = 'nargo verify proof.json --verifier verifier.json';
+    //const verifyCommand = 'nargo verify proof.json --verifier verifier.json';
+    const verifyCommand = 'nargo verify --input proof.json --verifier verifier.json';
     try {
       execSync(verifyCommand);
       return true;

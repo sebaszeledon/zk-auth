@@ -1,7 +1,6 @@
 # Logs
 logs
 *.log
-*.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -12,8 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-data.json
-input.json
 
 # Editor directories and files
 .vscode/*
@@ -25,6 +22,8 @@ input.json
 *.njsproj
 *.sln
 *.sw?
+data.json
+input.json
 
 # secrets
 .env
