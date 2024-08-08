@@ -5,7 +5,7 @@ Este proyecto demuestra cómo implementar un esquema de autenticación utilizand
 ## Requisitos
 
 - Node.js
-- MongoDB
+- Noir/Nargo
 - npm (Node Package Manager)
 
 ## Instalación
@@ -13,7 +13,7 @@ Este proyecto demuestra cómo implementar un esquema de autenticación utilizand
 1. Clona el repositorio:
 
    ```sh
-   git clone https://github.com/sebaszeledon/zk-auth.git
+   git clone https://github.com/sebaszeledon/zk-auth
    cd zk-auth
    ```
 
@@ -33,7 +33,7 @@ Este proyecto demuestra cómo implementar un esquema de autenticación utilizand
 
 Compila los circuitos zk-SNARKs:
 
-Asegúrate de tener nargo instalado. Si no los tienes, puedes instalarlos globalmente:
+Asegúrate de tener Nargo instalado. Si no lo tienes, puedes instalarlo globalmente:
 
 ```sh
 curl -L https://raw.githubusercontent.com/noir-lang/noirup/main/install | bash
@@ -57,4 +57,4 @@ Inicia el servidor:
 node server.js
 ```
 
-Abre tu navegador y navega a http://localhost:3000/register.
+Abre tu navegador y navega a http://localhost:3000/register para registrar un usuario.
