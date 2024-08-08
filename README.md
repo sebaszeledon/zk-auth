@@ -59,3 +59,5 @@ node server.js
 ```
 
 Abre tu navegador y navega a http://localhost:3000/register para registrar un usuario.
+
+Navega a http://localhost:3000/login para iniciar sesión con el usuario creado.
