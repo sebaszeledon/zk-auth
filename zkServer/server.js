@@ -7,6 +7,7 @@ const path = require('path');
 const bcrypt = require('bcrypt');
 require('dotenv').config();
 const { execSync } = require('child_process');
+const crypto = require('crypto');
 
 const app = express();
 const dataPath = path.join(__dirname, 'data.json');
@@ -64,15 +65,17 @@ function readData() {
   
   // Verificar contraseña con zk-SNARK
   async function verifyPassword(password, hash_password) {
-    // Crear el test.json con las entradas
-    // const witnessInput = {
-    //   password: Number(password),
-    //   hash_password: Number(hash_password)
-    // };
-    // fs.writeFileSync('input.json', JSON.stringify(witnessInput));
-    const tomlContent = `[inputs]
-      password = "${password}"
-      hash_password = "${hash_password}"`;
+
+    // Usar SHA-256 para generar un hash del password y luego convertir a BigInt
+    const passwordHash = Number(password)
+    const hashPasswordHash = crypto.createHash('sha256').update(hash_password).digest('hex');
+
+    const shorterhashPasswordHash = hashPasswordHash.slice(0, 16);  // Tomar solo los primeros 16 caracteres
+
+    const numericShorterPasswordHash = BigInt(`0x${shorterhashPasswordHash}`);
+    
+    const tomlContent = `password = ${passwordHash}
+    hash_password = ${numericShorterPasswordHash}`;
     fs.writeFileSync(tomlPath, tomlContent);
 
     // Debug: imprimir contenido de toml 
@@ -85,14 +88,14 @@ function readData() {
     }
     
     // Generar la prueba
-    //execSync(`nargo execute -p ${tomlPath} witness`);
     try {
       execSync(`nargo execute -p Prover`);
     } catch (error) {
       console.error("Error executing nargo:", error.stderr.toString());
       return false;
     }
-    //execSync('nargo prove witness --compiled compiled_program.json --output proof.json');
+    
+    // Ejecutar la prueba
     try {
       execSync(
         "nargo prove witness --compiled compiled_program.json --output proof.json"
@@ -106,6 +109,7 @@ function readData() {
     const result = fs.readFileSync('proof.json');
     const proof = JSON.parse(result);
     console.log('Proof: ', proof);
+
     // Verificar la prueba
     const verifyCommand = 'nargo verify --input proof.json --verifier verifier.json';
 
