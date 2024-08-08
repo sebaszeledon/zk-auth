@@ -66,7 +66,7 @@ function readData() {
     fs.writeFileSync('input.json', JSON.stringify(witnessInput));
   
     // Generar la prueba
-    execSync('nargo execute witness --input input.json --output witness.json');
+    execSync('nargo execute witness -- --input input.json --output witness.json');
     execSync('nargo prove witness.json --compiled compiled_program.json --output proof.json');
   
     // Leer el resultado de la prueba

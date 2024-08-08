@@ -6,5 +6,9 @@
   {
     "username": "sebas",
     "hash_password": "$2b$10$8RD4nngNsztJIv.OdqgUBeCs0DQlKMjb/pneGcnVTMgIvEhOt1E6."
+  },
+  {
+    "username": "gerson",
+    "hash_password": "$2b$10$42AO6bBeygNgQ09I0GQsdu2K9DZl//yApzyLeUJnf9h4r3lyGetqK"
   }
 ]
