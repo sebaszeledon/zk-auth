@@ -10,6 +10,12 @@ const { execSync } = require('child_process');
 
 const app = express();
 const dataPath = path.join(__dirname, 'data.json');
+const nargoDir = path.resolve(__dirname, '../zkAuth');
+const tomlPath = path.resolve(nargoDir, 'Prover.toml');
+
+// Cambiar el directorio a zkAuth
+process.chdir(nargoDir);
+
 
 // Leer datos de usuarios desde el archivo JSON
 function readData() {
@@ -59,29 +65,55 @@ function readData() {
   // Verificar contraseña con zk-SNARK
   async function verifyPassword(password, hash_password) {
     // Crear el test.json con las entradas
-    const witnessInput = {
-      password: Number(password),
-      hash_password: Number(hash_password)
-    };
-    fs.writeFileSync('input.json', JSON.stringify(witnessInput));
-  
+    // const witnessInput = {
+    //   password: Number(password),
+    //   hash_password: Number(hash_password)
+    // };
+    // fs.writeFileSync('input.json', JSON.stringify(witnessInput));
+    const tomlContent = `[inputs]
+      password = "${password}"
+      hash_password = "${hash_password}"`;
+    fs.writeFileSync(tomlPath, tomlContent);
+
+    // Debug: imprimir contenido de toml 
+    console.log('Prover.toml content:', tomlContent);
+
+    // Verificar que el archivo se ha creado correctamente
+    if (!fs.existsSync(tomlPath)) {
+      console.error('Prover.toml not found after writing!');
+      return false;
+    }
+    
     // Generar la prueba
-    //execSync('nargo execute witness --input input.json --output witness.json');
-    //execSync('nargo prove witness.json --compiled compiled_program.json --output proof.json');
-    execSync('nargo execute -- --input input.json --output witness.json');
-    execSync('nargo prove --input witness.json --compiled compiled_program.json --output proof.json');
-  
+    //execSync(`nargo execute -p ${tomlPath} witness`);
+    try {
+      execSync(`nargo execute -p Prover`);
+    } catch (error) {
+      console.error("Error executing nargo:", error.stderr.toString());
+      return false;
+    }
+    //execSync('nargo prove witness --compiled compiled_program.json --output proof.json');
+    try {
+      execSync(
+        "nargo prove witness --compiled compiled_program.json --output proof.json"
+      );
+    } catch (error) {
+      console.error("Error proving with nargo:", error.stderr.toString());
+      return false;
+    }
+
     // Leer el resultado de la prueba
     const result = fs.readFileSync('proof.json');
     const proof = JSON.parse(result);
-  
+    console.log('Proof: ', proof);
     // Verificar la prueba
-    //const verifyCommand = 'nargo verify proof.json --verifier verifier.json';
     const verifyCommand = 'nargo verify --input proof.json --verifier verifier.json';
+
     try {
       execSync(verifyCommand);
       return true;
     } catch (error) {
+      console.error('Error verifying with nargo:', error.stderr.toString());
       return false;
     }
   }

@@ -1,2 +1,3 @@
-hash_password = ""
-password = ""
+[inputs]
+      password = "123"
+      hash_password = "$2b$10$gPZpwRIzTlNXOxiicKzjpekim5h.jM.XU6rcXhd3GQ0a00ng2GJ4G"
