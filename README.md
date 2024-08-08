@@ -52,7 +52,7 @@ Compila el circuito dentro de la carpeta zkAuth:
 nargo compile
 ```
 
-Inicia el servidor:
+Inicia el servidor dentro de la carpeta zkServer:
 
 ```sh
 node server.js
